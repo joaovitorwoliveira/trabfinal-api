@@ -71,7 +71,7 @@ router.post("/", async (req, res) => {
           dateStyle: "long",
           timeStyle: "short",
         });
-        mensagemLogin = `Olá, o seu último login foi em ${ultimoLoginFormatado}.`;
+        mensagemLogin = `Oi, o seu último login foi em ${ultimoLoginFormatado}.`;
       }
 
       await prisma.usuario.update({

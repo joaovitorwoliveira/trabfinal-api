@@ -62,11 +62,29 @@ router.post("/", async (req, res) => {
         { expiresIn: "1h" }
       );
 
+      let mensagemLogin = "Bem-vindo! Este é o seu primeiro login.";
+
+      if (usuario.ultimoLogin) {
+        const ultimoLoginFormatado = new Date(
+          usuario.ultimoLogin
+        ).toLocaleString("pt-BR", {
+          dateStyle: "long",
+          timeStyle: "short",
+        });
+        mensagemLogin = `Olá, o seu último login foi em ${ultimoLoginFormatado}.`;
+      }
+
+      await prisma.usuario.update({
+        where: { id: usuario.id },
+        data: { ultimoLogin: new Date() },
+      });
+
       res.status(200).json({
         id: usuario.id,
         nome: usuario.nome,
         email: usuario.email,
         token,
+        mensagem: mensagemLogin,
       });
     } else {
       await prisma.log.create({
